@@ -1,0 +1,25 @@
+[package]
+name = "codesynapse-grpc"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+description = "gRPC service layer for codesynapse code intelligence graph queries"
+keywords = ["grpc", "code-intelligence", "graph", "mcp", "ast"]
+categories = ["development-tools", "network-programming"]
+
+[dependencies]
+codesynapse-core = { path = "../codesynapse-core", version = "0.1.0" }
+tonic = "0.12"
+prost = "0.13"
+tokio.workspace = true
+tokio-stream = { version = "0.1", features = ["sync"] }
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+tracing.workspace = true
+
+[build-dependencies]
+tonic-build = "0.12"
+protoc-bin-vendored = "3"

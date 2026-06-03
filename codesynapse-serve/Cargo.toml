@@ -1,0 +1,25 @@
+[package]
+name = "codesynapse-serve"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+description = "Graph query server for codesynapse — serves structural code intelligence over gRPC"
+keywords = ["code-intelligence", "graph", "grpc", "ast", "mcp"]
+categories = ["development-tools", "network-programming"]
+
+[dependencies]
+codesynapse-core = { path = "../codesynapse-core", version = "0.1.0" }
+codesynapse-grpc = { path = "../codesynapse-grpc", version = "0.1.0" }
+tokio.workspace = true
+tonic = "0.12"
+serde.workspace = true
+serde_json.workspace = true
+tower.workspace = true
+thiserror.workspace = true
+tracing.workspace = true
+regex.workspace = true
+
+[dev-dependencies]
+tempfile.workspace = true

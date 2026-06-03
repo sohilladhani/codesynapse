@@ -1,0 +1,70 @@
+syntax = "proto3";
+package codesynapse;
+
+message Node {
+  string id = 1;
+  string label = 2;
+  string source_file = 3;
+  string source_location = 4;
+  int64 community = 5;
+}
+
+message Edge {
+  string source = 1;
+  string target = 2;
+  string relation = 3;
+  string confidence = 4;
+}
+
+message GetGraphRequest {}
+
+message GetGraphResponse {
+  repeated Node nodes = 1;
+  repeated Edge edges = 2;
+}
+
+message GetNodeRequest {
+  string id = 1;
+}
+
+message GetNodeResponse {
+  Node node = 1;
+}
+
+message SearchNodesRequest {
+  string query = 1;
+  int32 limit = 2;
+}
+
+message SearchNodesResponse {
+  repeated Node nodes = 1;
+}
+
+message ShortestPathRequest {
+  string source = 1;
+  string target = 2;
+}
+
+message ShortestPathResponse {
+  repeated string node_ids = 1;
+  bool found = 2;
+}
+
+message WatchGraphRequest {}
+
+message GraphEvent {
+  oneof event {
+    Node node_added = 1;
+    Edge edge_added = 2;
+    string node_removed = 3;
+    string graph_reset = 4;
+  }
+}
+
+service GraphService {
+  rpc GetGraph(GetGraphRequest) returns (GetGraphResponse);
+  rpc GetNode(GetNodeRequest) returns (GetNodeResponse);
+  rpc SearchNodes(SearchNodesRequest) returns (SearchNodesResponse);
+  rpc ShortestPath(ShortestPathRequest) returns (ShortestPathResponse);
+  rpc WatchGraph(WatchGraphRequest) returns (stream GraphEvent);
+}

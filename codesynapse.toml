@@ -1,0 +1,27 @@
+# codesynapse.toml — project configuration
+# All fields are optional. Delete or comment out anything you don't need.
+# Generate this file: codesynapse init
+
+# Output directory for exported graph files (default: codesynapse-out/)
+# output = "codesynapse-out"
+
+# Skip LLM extraction for doc/paper files — index source code only (default: false)
+# no_llm = false
+
+# Index source files only, skip docs and papers entirely (default: false)
+# code_only = false
+
+# Export formats: any combination of "json", "html", "graphml", "obsidian"
+# formats = ["json"]
+
+# LLM provider for semantic extraction of docs/papers (optional — source code needs no LLM)
+# [llm]
+# provider = "anthropic"              # "anthropic" | "openai" | any OpenAI-compatible
+# model    = "claude-sonnet-4-20250514"
+# api_key  = "sk-..."                 # or set ANTHROPIC_API_KEY / OPENAI_API_KEY env var
+# base_url = "https://..."            # optional — for OpenAI-compatible providers
+
+# Custom embedding model path (default: ~/.codesynapse/models/potion-code-16M/)
+# Override only if you downloaded the model to a non-default location.
+# [embeddings]
+# model_path = "./models/potion-code-16M"
