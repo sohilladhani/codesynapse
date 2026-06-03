@@ -1,0 +1,42 @@
+{
+  "name": "codesynapse-pi",
+  "version": "0.1.0",
+  "description": "Pi coding agent extension for codesynapse code intelligence",
+  "keywords": [
+    "pi-package",
+    "codesynapse",
+    "code-intelligence"
+  ],
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/extension.js",
+  "exports": {
+    ".": "./dist/extension.js"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build",
+    "test": "tsx --test evals/*.test.ts"
+  },
+  "pi": {
+    "extensions": [
+      "./dist/extension.js"
+    ]
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": ">=0.70.0"
+  },
+  "dependencies": {
+    "typebox": "^1.1.0"
+  },
+  "devDependencies": {
+    "@earendil-works/pi-coding-agent": "^0.79.0",
+    "@types/node": "^22.0.0",
+    "tsx": "^4.22.4",
+    "typescript": "^5.5.0"
+  }
+}

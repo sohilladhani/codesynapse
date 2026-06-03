@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Codesynapse Graph Explorer</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      background: #0d1117;
+      color: #c9d1d9;
+      height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      overflow: hidden;
+    }
+
+    header {
+      padding: 12px 20px;
+      border-bottom: 1px solid #21262d;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: #161b22;
+    }
+
+    header h1 { font-size: 14px; color: #58a6ff; letter-spacing: 0.05em; }
+    #status { font-size: 12px; color: #8b949e; margin-left: auto; }
+    #status.ok { color: #3fb950; }
+    #status.err { color: #f85149; }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      overflow: hidden;
+    }
+
+    .sidebar {
+      border-right: 1px solid #21262d;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: #161b22;
+    }
+
+    .panel {
+      padding: 12px;
+      border-bottom: 1px solid #21262d;
+    }
+
+    .panel label {
+      display: block;
+      font-size: 11px;
+      color: #8b949e;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 6px;
+    }
+
+    input[type="text"], input[type="file"] {
+      width: 100%;
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      color: #c9d1d9;
+      font-family: inherit;
+      font-size: 13px;
+      padding: 6px 10px;
+      outline: none;
+    }
+
+    input[type="text"]:focus { border-color: #58a6ff; }
+
+    input[type="file"] { padding: 5px; cursor: pointer; }
+
+    .btn {
+      background: #21262d;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      color: #c9d1d9;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 12px;
+      padding: 5px 12px;
+      margin-top: 6px;
+    }
+
+    .btn:hover { background: #30363d; }
+    .btn.primary { background: #1f6feb; border-color: #1f6feb; color: #fff; }
+    .btn.primary:hover { background: #388bfd; }
+
+    .node-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px;
+    }
+
+    .node-item {
+      padding: 8px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      border: 1px solid transparent;
+      margin-bottom: 3px;
+    }
+
+    .node-item:hover { background: #21262d; border-color: #30363d; }
+    .node-item.selected { background: #1f2d3d; border-color: #1f6feb; }
+
+    .node-item .label { color: #79c0ff; font-weight: 600; }
+    .node-item .meta { color: #8b949e; font-size: 11px; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    .main-panel {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid #21262d;
+      background: #161b22;
+      padding: 0 16px;
+    }
+
+    .tab {
+      padding: 10px 16px;
+      font-size: 12px;
+      cursor: pointer;
+      color: #8b949e;
+      border-bottom: 2px solid transparent;
+    }
+
+    .tab.active { color: #c9d1d9; border-bottom-color: #f78166; }
+
+    .tab-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: none;
+    }
+
+    .tab-content.active { display: block; }
+
+    .detail-box {
+      background: #161b22;
+      border: 1px solid #21262d;
+      border-radius: 8px;
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+
+    .detail-box h3 { font-size: 13px; color: #79c0ff; margin-bottom: 8px; }
+
+    .kv { display: grid; grid-template-columns: 120px 1fr; gap: 4px 8px; font-size: 12px; }
+    .kv .k { color: #8b949e; }
+    .kv .v { color: #e6edf3; word-break: break-all; }
+
+    .edge-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      padding: 5px 0;
+      border-bottom: 1px solid #21262d;
+    }
+
+    .edge-row:last-child { border-bottom: none; }
+
+    .badge {
+      background: #1f2d3d;
+      border: 1px solid #1f6feb;
+      border-radius: 4px;
+      color: #58a6ff;
+      font-size: 11px;
+      padding: 1px 6px;
+    }
+
+    .path-box {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .path-node {
+      background: #1f2d3d;
+      border: 1px solid #30363d;
+      border-radius: 4px;
+      color: #79c0ff;
+      font-size: 12px;
+      padding: 3px 8px;
+    }
+
+    .path-arrow { color: #8b949e; font-size: 14px; }
+
+    .empty { color: #8b949e; font-size: 12px; text-align: center; padding: 32px; }
+
+    #drop-zone {
+      position: relative;
+      border: 2px dashed #30363d;
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+      font-size: 12px;
+      color: #8b949e;
+      cursor: pointer;
+      transition: border-color 0.15s;
+      overflow: hidden;
+    }
+
+    #drop-zone.loaded {
+      border-color: #3fb950;
+      color: #3fb950;
+      cursor: default;
+      pointer-events: none;
+    }
+
+    #drop-zone.loaded input { display: none; }
+
+    #drop-zone.drag-over { border-color: #58a6ff; color: #58a6ff; }
+
+    .stats-bar {
+      display: flex;
+      gap: 16px;
+      font-size: 11px;
+      color: #8b949e;
+      padding: 6px 12px;
+      border-bottom: 1px solid #21262d;
+    }
+
+    .stats-bar span { color: #58a6ff; font-weight: 600; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>⬡ codesynapse</h1>
+  <div id="status">no graph loaded</div>
+</header>
+
+<div class="layout">
+  <div class="sidebar">
+
+    <div class="panel">
+      <label>Load Graph (JSON)</label>
+      <div id="drop-zone">
+        drop graph.json here<br>or click to browse
+        <input type="file" id="file-input" accept=".json" style="position:absolute;opacity:0;width:100%;height:100%;top:0;left:0;cursor:pointer;">
+      </div>
+    </div>
+
+    <div class="panel">
+      <label>Search nodes</label>
+      <input type="text" id="search-input" placeholder="label, file, type…">
+      <div class="stats-bar" id="stats-bar" style="display:none">
+        <div>nodes <span id="stat-nodes">0</span></div>
+        <div>edges <span id="stat-edges">0</span></div>
+        <div>results <span id="stat-results">0</span></div>
+      </div>
+    </div>
+
+    <div class="node-list" id="node-list">
+      <div class="empty">load a graph to begin</div>
+    </div>
+
+  </div>
+
+  <div class="main-panel">
+    <div class="tabs">
+      <div class="tab active" data-tab="detail">Node detail</div>
+      <div class="tab" data-tab="neighbors">Neighbors</div>
+      <div class="tab" data-tab="path">Shortest path</div>
+    </div>
+
+    <div class="tab-content active" id="tab-detail">
+      <div class="empty">select a node from the list</div>
+    </div>
+
+    <div class="tab-content" id="tab-neighbors">
+      <div class="empty">select a node from the list</div>
+    </div>
+
+    <div class="tab-content" id="tab-path">
+      <div class="detail-box">
+        <h3>Find shortest path</h3>
+        <div style="display:grid;gap:8px;margin-top:8px">
+          <input type="text" id="path-from" placeholder="source node id">
+          <input type="text" id="path-to" placeholder="target node id">
+          <button class="btn primary" id="path-btn">Find path</button>
+        </div>
+        <div id="path-result" style="margin-top:12px"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import init, { WasmGraph } from '../pkg/codesynapse_wasm.js';
+
+  await init();
+
+  let graph = null;
+  let selectedNodeId = null;
+
+  const status    = document.getElementById('status');
+  const nodeList  = document.getElementById('node-list');
+  const statsBar  = document.getElementById('stats-bar');
+  const statNodes = document.getElementById('stat-nodes');
+  const statEdges = document.getElementById('stat-edges');
+  const statRes   = document.getElementById('stat-results');
+  const searchInput = document.getElementById('search-input');
+  const dropZone  = document.getElementById('drop-zone');
+  const fileInput = document.getElementById('file-input');
+
+  // ── tabs ──────────────────────────────────────────────────────────────
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+    });
+  });
+
+  // ── load graph ────────────────────────────────────────────────────────
+  function loadJSON(text) {
+    let data;
+    try { data = JSON.parse(text); } catch(e) {
+      setStatus('parse error: ' + e.message, 'err'); return;
+    }
+
+    graph = new WasmGraph();
+    let nodeCount = 0, edgeCount = 0, errors = 0;
+
+    const nodes = data.nodes ?? [];
+    const edges = data.edges ?? [];
+
+    for (const n of nodes) {
+      try {
+        graph.add_node(JSON.stringify({
+          id: String(n.id ?? n.label ?? '?'),
+          label: String(n.label ?? n.id ?? '?'),
+          file_type: String(n.file_type ?? n.kind ?? 'node'),
+          source_file: String(n.source_file ?? n.file ?? ''),
+        }));
+        nodeCount++;
+      } catch { errors++; }
+    }
+
+    for (const e of edges) {
+      try {
+        graph.add_edge(JSON.stringify({
+          source: String(e.source ?? e.from ?? ''),
+          target: String(e.target ?? e.to ?? ''),
+          relation: String(e.relation ?? e.type ?? e.label ?? 'edge'),
+          weight: Number(e.weight ?? 1.0),
+        }));
+        edgeCount++;
+      } catch { errors++; }
+    }
+
+    const warn = errors ? ` (${errors} skipped)` : '';
+    setStatus(`${nodeCount} nodes · ${edgeCount} edges${warn}`, 'ok');
+    statNodes.textContent = nodeCount;
+    statEdges.textContent = edgeCount;
+    statsBar.style.display = 'flex';
+    dropZone.classList.add('loaded');
+    dropZone.textContent = `✓ ${nodeCount} nodes · ${edgeCount} edges`;
+    renderSearch('');
+    searchInput.value = '';
+  }
+
+  function setStatus(msg, cls = '') {
+    status.textContent = msg;
+    status.className = cls;
+  }
+
+  // ── drag/drop & file picker ───────────────────────────────────────────
+  dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+  dropZone.addEventListener('drop', e => {
+    e.preventDefault(); dropZone.classList.remove('drag-over');
+    const file = e.dataTransfer.files[0];
+    if (file) readFile(file);
+  });
+
+  fileInput.addEventListener('change', () => {
+    if (fileInput.files[0]) readFile(fileInput.files[0]);
+  });
+
+  function readFile(file) {
+    const reader = new FileReader();
+    reader.onload = e => loadJSON(e.target.result);
+    reader.readAsText(file);
+  }
+
+  // ── search ────────────────────────────────────────────────────────────
+  searchInput.addEventListener('input', () => {
+    if (graph) renderSearch(searchInput.value.trim());
+  });
+
+  function renderSearch(query) {
+    if (!graph) return;
+    const results = JSON.parse(graph.search(query || '', 200));
+    statRes.textContent = results.length;
+    nodeList.innerHTML = '';
+    if (results.length === 0) {
+      nodeList.innerHTML = '<div class="empty">no matches</div>'; return;
+    }
+    for (const n of results) {
+      const el = document.createElement('div');
+      el.className = 'node-item' + (n.id === selectedNodeId ? ' selected' : '');
+      el.dataset.id = n.id;
+      el.innerHTML = `<div class="label">${esc(n.label)}</div>
+        <div class="meta">${esc(n.file_type)} · ${esc(n.source_file)}</div>`;
+      el.addEventListener('click', () => selectNode(n.id));
+      nodeList.appendChild(el);
+    }
+  }
+
+  // ── select node ───────────────────────────────────────────────────────
+  function selectNode(id) {
+    selectedNodeId = id;
+    document.querySelectorAll('.node-item').forEach(el => {
+      el.classList.toggle('selected', el.dataset.id === id);
+    });
+
+    const raw = graph.get_node(id);
+    if (!raw) return;
+    const n = JSON.parse(raw);
+
+    // detail tab
+    document.getElementById('tab-detail').innerHTML = `
+      <div class="detail-box">
+        <h3>${esc(n.label)}</h3>
+        <div class="kv">
+          <div class="k">id</div><div class="v">${esc(n.id)}</div>
+          <div class="k">type</div><div class="v">${esc(n.file_type)}</div>
+          <div class="k">file</div><div class="v">${esc(n.source_file)}</div>
+        </div>
+      </div>`;
+
+    // neighbors tab
+    const neighbors = JSON.parse(graph.neighbors(id));
+    const allEdges = JSON.parse(graph.get_all_edges());
+    const outEdges = allEdges.filter(e => e.source === id);
+
+    let neighborsHtml = `<div class="detail-box"><h3>Outgoing edges (${outEdges.length})</h3>`;
+    if (outEdges.length === 0) {
+      neighborsHtml += '<div class="empty" style="padding:12px">none</div>';
+    } else {
+      for (const e of outEdges) {
+        const targetNode = neighbors.find(n => n.id === e.target);
+        const targetLabel = targetNode ? targetNode.label : e.target;
+        neighborsHtml += `<div class="edge-row">
+          <span class="badge">${esc(e.relation)}</span>
+          <span style="color:#79c0ff;cursor:pointer" onclick="window._selectNode('${esc(e.target)}')">${esc(targetLabel)}</span>
+          <span style="color:#8b949e;font-size:11px;margin-left:auto">w:${e.weight}</span>
+        </div>`;
+      }
+    }
+    neighborsHtml += '</div>';
+    document.getElementById('tab-neighbors').innerHTML = neighborsHtml;
+
+    // prefill path source
+    document.getElementById('path-from').value = id;
+  }
+
+  // expose for inline onclick
+  window._selectNode = selectNode;
+
+  // ── shortest path ─────────────────────────────────────────────────────
+  document.getElementById('path-btn').addEventListener('click', () => {
+    if (!graph) { alert('load a graph first'); return; }
+    const from = document.getElementById('path-from').value.trim();
+    const to   = document.getElementById('path-to').value.trim();
+    if (!from || !to) return;
+
+    const raw = graph.shortest_path(from, to);
+    const result = document.getElementById('path-result');
+    if (!raw) {
+      result.innerHTML = '<div style="color:#f85149;font-size:12px">no path found</div>';
+      return;
+    }
+    const path = JSON.parse(raw);
+    let html = '<div class="path-box">';
+    for (let i = 0; i < path.length; i++) {
+      const nodeRaw = graph.get_node(path[i]);
+      const label = nodeRaw ? JSON.parse(nodeRaw).label : path[i];
+      html += `<div class="path-node" style="cursor:pointer" onclick="window._selectNode('${esc(path[i])}')">${esc(label)}</div>`;
+      if (i < path.length - 1) html += '<div class="path-arrow">→</div>';
+    }
+    html += `</div><div style="color:#8b949e;font-size:11px;margin-top:8px">${path.length} nodes, ${path.length - 1} hops</div>`;
+    result.innerHTML = html;
+  });
+
+  function esc(s) {
+    return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+</script>
+</body>
+</html>
