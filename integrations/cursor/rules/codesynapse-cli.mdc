@@ -1,0 +1,99 @@
+---
+description: |-
+  Use this rule to answer codebase architecture questions, trace dependencies, find callers/callees, calculate blast radius, and explore the code graph.
+  Triggers on: "how does X work", "what handles Y", "where is Z defined", "explain the mechanism", "who calls", "blast radius", "shortest path", "trace request flow", "inheritance hierarchy", "graph stats", "dependency graph", "call graph", "code graph", "architectural overview", "god nodes".
+  Do NOT trigger for simple syntax questions or trivial file lookups.
+globs: "**/*.{rs,py,ts,js,go,java,tsx,jsx,rb,ex,exs,kt,scala,cs}"
+---
+
+# Codesynapse CLI
+
+Codesynapse has pre-indexed this codebase into a knowledge graph that knows about classes, functions, their relationships (calls, extends, implements), and source locations. The graph is more precise than grep for architecture questions.
+
+MCP may not be available. All codesynapse commands run via bash terminal (Cmd+J / Ctrl+J). Use the `codesynapse` binary — if not found, try `/usr/local/bin/codesynapse` then `~/.local/bin/codesynapse` (the two standard install locations). The project graph is at `./codesynapse-out/graph.json`. Run `codesynapse module list` to see all indexed modules.
+
+**Use codesynapse CLI commands before grep/find for architecture questions.**
+
+## Quick Reference
+
+| Intent | Command |
+|--------|---------|
+| General codebase query | `codesynapse query "<question>" --graph <path>` |
+| Node details + relationships | `codesynapse explain <id> --path <graph-path>` |
+| Shortest path A → B | `codesynapse path <A> <B>` |
+| Blast radius of X | `codesynapse affected <X> --graph <path> --depth 2` |
+| Graph statistics | `codesynapse stats <path>` |
+| God/central nodes | `codesynapse analyze <path>` |
+| Community detection | `codesynapse cluster <path>` |
+| Module list | `codesynapse module list` |
+| Graph diff | `codesynapse diff <path> --baseline <other>` |
+
+## Decision Tree
+
+**STEP 1** — Architecture questions ("how does X work", "what handles Y", "where is Z defined"):
+```bash
+codesynapse query "<question>" --graph ./codesynapse-out/graph.json
+```
+
+**STEP 2** — Need details on a specific node:
+```bash
+codesynapse explain <ClassName> --path ./codesynapse-out/graph.json
+```
+
+**STEP 3** — Blast radius / change impact:
+```bash
+codesynapse affected <ClassName> --graph ./codesynapse-out/graph.json --depth 2
+```
+
+**STEP 4** — Dependency tracing / request flow:
+```bash
+codesynapse path <FromClass> <ToClass>
+```
+
+**STEP 5** — Module ownership:
+```bash
+codesynapse query "<concept>" --graph ./codesynapse-out/graph.json
+# Check file paths in results
+```
+
+## Approximating Full Context
+
+When you need source body + call graph (equivalent to MCP `codesynapse_context`):
+
+```bash
+# 1. Find the node
+codesynapse query "ClassName" --graph ./codesynapse-out/graph.json
+
+# 2. Get details + neighbors
+codesynapse explain ClassName --path ./codesynapse-out/graph.json
+
+# 3. Get 1-hop callers/callees
+codesynapse affected ClassName --graph ./codesynapse-out/graph.json --depth 1 --relation calls
+
+# 4. Read source file at the line number from explain output
+```
+
+## Examples
+
+```bash
+# How does auth work?
+codesynapse query "authentication flow" --graph ./codesynapse-out/graph.json
+
+# Blast radius before editing UserService
+codesynapse affected UserService --graph ./codesynapse-out/graph.json --depth 2
+
+# Shortest dependency path
+codesynapse path UserController UserRepository
+
+# What are the most connected nodes?
+codesynapse analyze ./codesynapse-out/graph.json
+```
+
+## Rules
+
+- Do NOT grep/find to verify graph results — the graph is the source of truth.
+- Empty results → broaden query terms and retry.
+- Stale graph after code changes → `codesynapse module refresh <name>`
+- Read method bodies natively (use file path + line number from `explain`, then open the file).
+- `pagerank` subcommand does not exist — use `analyze` instead.
+- Run `codesynapse <subcommand> --help` if unsure about flags.

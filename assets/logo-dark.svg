@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 60" width="280" height="60" role="img" aria-label="codesynapse">
+
+  <!-- axon stem (left) -->
+  <line x1="4" y1="30" x2="11" y2="30" stroke="#22D3EE" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- pre-synaptic bulb glow -->
+  <circle cx="18" cy="30" r="12" fill="#22D3EE" opacity="0.14"/>
+  <!-- pre-synaptic bulb -->
+  <circle cx="18" cy="30" r="7" fill="#22D3EE"/>
+  <!-- vesicles -->
+  <circle cx="16" cy="28" r="1.4" fill="white" opacity="0.55"/>
+  <circle cx="20" cy="28" r="1.4" fill="white" opacity="0.55"/>
+  <circle cx="18" cy="32" r="1.4" fill="white" opacity="0.55"/>
+
+  <!-- synaptic cleft — glowing pulse -->
+  <circle cx="32" cy="30" r="7"   fill="#22D3EE" opacity="0.18"/>
+  <circle cx="32" cy="30" r="4"   fill="#22D3EE" opacity="0.40"/>
+  <circle cx="32" cy="30" r="2.2" fill="#A5F3FC"/>
+  <circle cx="31.2" cy="29.2" r="0.8" fill="white" opacity="0.85"/>
+
+  <!-- post-synaptic bulb glow -->
+  <circle cx="46" cy="30" r="12" fill="#0EA5E9" opacity="0.12"/>
+  <!-- post-synaptic bulb -->
+  <circle cx="46" cy="30" r="7" fill="#0EA5E9"/>
+  <!-- receptor highlight -->
+  <circle cx="46" cy="30" r="2.5" fill="white" opacity="0.22"/>
+
+  <!-- dendrite spines (fanning right) -->
+  <line x1="53" y1="27" x2="61" y2="22" stroke="#0EA5E9" stroke-width="2" stroke-linecap="round"/>
+  <line x1="53" y1="30" x2="62" y2="30" stroke="#0EA5E9" stroke-width="2" stroke-linecap="round"/>
+  <line x1="53" y1="33" x2="61" y2="38" stroke="#0EA5E9" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- wordmark -->
+  <text
+    x="76" y="38"
+    font-family="'SF Mono','Fira Code','Cascadia Code','JetBrains Mono',ui-monospace,monospace"
+    font-size="23"
+    font-weight="600"
+    letter-spacing="-0.4"
+    fill="#F1F5F9">codesynapse</text>
+</svg>
