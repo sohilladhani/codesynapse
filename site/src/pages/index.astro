@@ -1,0 +1,1050 @@
+---
+import { getStarsLabel } from '../lib/github';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const repo = 'https://github.com/sohilladhani/codesynapse';
+const crates = 'https://crates.io/crates/codesynapse-cli';
+const stars = await getStarsLabel();
+const install = 'curl -fsSL https://raw.githubusercontent.com/sohilladhani/codesynapse/master/install.sh | sh';
+const demoGif = 'https://raw.githubusercontent.com/sohilladhani/codesynapse/master/assets/demo.gif';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="icon" href={`${base}/icon.svg`} type="image/svg+xml" />
+		<title>codesynapse — Give your AI assistant a map of your codebase</title>
+		<meta
+			name="description"
+			content="Architecture-level code intelligence for AI coding assistants. 32 MCP tools, hybrid BM25 + dense vector search, fully local. No cloud APIs."
+		/>
+		<meta property="og:title" content="codesynapse" />
+		<meta property="og:description" content="Give your AI assistant a map of your codebase." />
+		<meta property="og:type" content="website" />
+		<meta name="theme-color" content="#050D18" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+	</head>
+	<body>
+		<div class="frame">
+
+			<!-- NAV -->
+			<header class="nav">
+				<a class="wordmark" href={`${base}/`}>
+					<img src={`${base}/icon.svg`} width="46" height="20" alt="" aria-hidden="true" />
+					codesynapse
+				</a>
+				<nav class="nav-links">
+					<a href="#quick-start">Quick Start</a>
+					<a href={repo}>GitHub</a>
+					<a class="star" href={`${repo}/stargazers`}>
+						<span class="star-glyph" aria-hidden="true">★</span>{stars}
+					</a>
+				</nav>
+			</header>
+
+			<main>
+
+				<!-- HERO -->
+				<section class="hero">
+					<h1>Give your AI assistant a map of your codebase</h1>
+					<p class="lede">
+						Architecture-level code intelligence delivered over MCP. Class hierarchies,
+						call chains, blast radius — answered from a graph, not file search.
+					</p>
+					<div class="cta">
+						<a class="btn btn-primary" href="#quick-start">Get started</a>
+						<a class="btn btn-ghost" href={repo}>View on GitHub</a>
+					</div>
+					<div class="install" data-install={install}>
+						<code>{install}</code>
+						<button class="copy" type="button" aria-label="Copy install command">
+							<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8">
+								<rect x="9" y="9" width="11" height="11" rx="0"/>
+								<path d="M5 15V5a1 1 0 0 1 1-1h9" />
+							</svg>
+						</button>
+					</div>
+				</section>
+
+				<!-- STATS BAR -->
+				<section class="stats">
+					<div class="stat">
+						<span class="stat-num">32</span>
+						<span class="stat-label">MCP tools</span>
+					</div>
+					<div class="stat">
+						<span class="stat-num">30+</span>
+						<span class="stat-label">languages</span>
+					</div>
+					<div class="stat">
+						<span class="stat-num">100%</span>
+						<span class="stat-label">local</span>
+					</div>
+					<div class="stat">
+						<span class="stat-num">0</span>
+						<span class="stat-label">cloud APIs</span>
+					</div>
+				</section>
+
+				<!-- DEMO -->
+				<section class="demo">
+					<img src={demoGif} alt="codesynapse demo — module add, module list, query" loading="lazy" />
+				</section>
+
+				<!-- FEATURES -->
+				<section class="features">
+					<article class="feature">
+						<svg class="ficon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
+							<circle cx="20" cy="20" r="12" />
+							<path d="M30 30l10 10" stroke-linecap="round"/>
+							<path d="M14 20h12M20 14v12" stroke-linecap="round"/>
+							<circle cx="36" cy="14" r="5"/>
+							<path d="M36 9v5M36 14h5" stroke-linecap="round"/>
+						</svg>
+						<h2>Hybrid BM25 + dense search</h2>
+						<p>
+							BM25 for exact symbol matches, dense vector embeddings for semantic concepts.
+							RRF fusion means "auth token handler" finds the right class — even if it's
+							called <code>JwtValidator</code>.
+						</p>
+					</article>
+					<article class="feature">
+						<svg class="ficon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
+							<circle cx="24" cy="24" r="5"/>
+							<circle cx="24" cy="24" r="12" stroke-dasharray="3 2"/>
+							<circle cx="24" cy="24" r="20" stroke-dasharray="2 3" opacity="0.5"/>
+							<circle cx="24" cy="9"  r="3" fill="currentColor" stroke="none"/>
+							<circle cx="38" cy="18" r="3" fill="currentColor" stroke="none"/>
+							<circle cx="38" cy="30" r="3" fill="currentColor" stroke="none"/>
+							<circle cx="10" cy="18" r="3" fill="currentColor" stroke="none"/>
+						</svg>
+						<h2>Blast radius analysis</h2>
+						<p>
+							Know the full impact of a change before touching a line. Trace callers,
+							transitive dependents, and cross-module ripple effects — scored by risk.
+						</p>
+					</article>
+					<article class="feature">
+						<svg class="ficon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
+							<rect x="8" y="14" width="32" height="22" rx="0"/>
+							<path d="M16 14v-4h16v4"/>
+							<path d="M8 26h32"/>
+							<circle cx="24" cy="32" r="2.5" fill="currentColor" stroke="none"/>
+							<path d="M21 20h6M21 23h4" stroke-linecap="round"/>
+							<path d="M4 36h4M40 36h4" stroke-linecap="round"/>
+						</svg>
+						<h2>Fully local, no cloud</h2>
+						<p>
+							Runs on CPU. No GPU, no API keys, no data leaving your machine.
+							The embedding model downloads once — every query after that is instant and free.
+						</p>
+					</article>
+				</section>
+
+				<!-- WORKS WITH -->
+				<section class="works-with">
+					<p class="works-label">Works with</p>
+					<ul class="clients">
+						<li>Claude Code</li>
+						<li>Cursor</li>
+						<li>OpenCode</li>
+						<li>Codex CLI</li>
+						<li>Hermes Agent</li>
+						<li>Kiro</li>
+						<li>any MCP client</li>
+					</ul>
+				</section>
+
+				<!-- QUICK START -->
+				<section class="quickstart" id="quick-start">
+					<h2 class="section-title">Quick start</h2>
+					<ol class="steps">
+						<li class="step">
+							<span class="step-num">1</span>
+							<div class="step-body">
+								<h3>Install</h3>
+								<p>Pre-built binary — no Rust required.</p>
+								<div class="code-block" data-copy="curl -fsSL https://raw.githubusercontent.com/sohilladhani/codesynapse/master/install.sh | sh">
+									<pre><code>curl -fsSL https://raw.githubusercontent.com/sohilladhani/codesynapse/master/install.sh | sh</code></pre>
+									<button class="code-copy" type="button" aria-label="Copy">
+										<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8">
+											<rect x="9" y="9" width="11" height="11"/>
+											<path d="M5 15V5a1 1 0 0 1 1-1h9" />
+										</svg>
+									</button>
+								</div>
+								<p class="step-note">Rust user? <code>cargo install codesynapse-cli</code> · or grab a <a href={`${repo}/releases/latest`} target="_blank" rel="noopener">pre-built binary</a>.</p>
+							</div>
+						</li>
+						<li class="step">
+							<span class="step-num">2</span>
+							<div class="step-body">
+								<h3>Register with your AI client</h3>
+								<p>Auto-detects Claude Code and Cursor. For other clients, see flags below.</p>
+								<div class="code-block" data-copy="codesynapse setup">
+									<pre><code>codesynapse setup</code></pre>
+									<button class="code-copy" type="button" aria-label="Copy">
+										<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8">
+											<rect x="9" y="9" width="11" height="11"/>
+											<path d="M5 15V5a1 1 0 0 1 1-1h9" />
+										</svg>
+									</button>
+								</div>
+								<p class="step-note">Other clients: <code>codesynapse opencode install</code> · <code>codesynapse codex install</code> · <code>codesynapse kiro install</code></p>
+							</div>
+						</li>
+						<li class="step">
+							<span class="step-num">3</span>
+							<div class="step-body">
+								<h3>Index a repository</h3>
+								<div class="code-block" data-copy="codesynapse module add myrepo /path/to/repo">
+									<pre><code>codesynapse module add myrepo /path/to/repo</code></pre>
+									<button class="code-copy" type="button" aria-label="Copy">
+										<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8">
+											<rect x="9" y="9" width="11" height="11"/>
+											<path d="M5 15V5a1 1 0 0 1 1-1h9" />
+										</svg>
+									</button>
+								</div>
+								<p class="step-note">Add multiple repos — graphs merge automatically for cross-module queries.</p>
+							</div>
+						</li>
+						<li class="step">
+							<span class="step-num">4</span>
+							<div class="step-body">
+								<h3>Ask architecture questions</h3>
+								<p>Restart your AI client. The 32 MCP tools are now available.</p>
+								<div class="example-queries">
+									<span class="query">"What handles auth token expiry?"</span>
+									<span class="query">"Show blast radius of UserService"</span>
+									<span class="query">"Trace callers of PaymentProcessor.charge"</span>
+								</div>
+							</div>
+						</li>
+					</ol>
+				</section>
+
+				<!-- COMPARISON -->
+				<section class="comparison">
+					<h2 class="section-title">How it compares</h2>
+					<div class="table-wrap">
+						<table>
+							<thead>
+								<tr>
+									<th></th>
+									<th>codegraph</th>
+									<th>semble</th>
+									<th>Sourcegraph Cody</th>
+									<th class="col-cs">codesynapse</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td class="row-label">MCP tools</td>
+									<td>10</td>
+									<td>2</td>
+									<td>—</td>
+									<td class="col-cs val-win">32</td>
+								</tr>
+								<tr>
+									<td class="row-label">Hybrid BM25 + dense</td>
+									<td class="val-no">✗</td>
+									<td class="val-yes">✓</td>
+									<td class="val-yes">✓</td>
+									<td class="col-cs val-win">✓</td>
+								</tr>
+								<tr>
+									<td class="row-label">Structural graph</td>
+									<td class="val-yes">✓</td>
+									<td class="val-no">✗</td>
+									<td class="val-yes">✓</td>
+									<td class="col-cs val-win">✓</td>
+								</tr>
+								<tr>
+									<td class="row-label">Blast radius</td>
+									<td class="val-yes">✓</td>
+									<td class="val-no">✗</td>
+									<td class="val-yes">✓</td>
+									<td class="col-cs val-win">✓</td>
+								</tr>
+								<tr>
+									<td class="row-label">Fully local</td>
+									<td class="val-yes">✓</td>
+									<td class="val-yes">✓</td>
+									<td class="val-no">✗</td>
+									<td class="col-cs val-win">✓</td>
+								</tr>
+								<tr>
+									<td class="row-label">No cloud API needed</td>
+									<td class="val-yes">✓</td>
+									<td class="val-yes">✓</td>
+									<td class="val-no">✗</td>
+									<td class="col-cs val-win">✓</td>
+								</tr>
+								<tr>
+									<td class="row-label">Multi-module graph</td>
+									<td class="val-yes">✓</td>
+									<td class="val-no">✗</td>
+									<td class="val-yes">✓</td>
+									<td class="col-cs val-win">✓</td>
+								</tr>
+								<tr>
+									<td class="row-label">No telemetry by default</td>
+									<td class="val-no">✗ opt-out</td>
+									<td>—</td>
+									<td class="val-no">✗</td>
+									<td class="col-cs val-win">✓ opt-in</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<p class="comparison-note">
+						<strong>codegraph</strong> is the closest alternative — TypeScript, local, blast radius, multi-module.
+						Key gap: FTS5 lexical search only (no dense embeddings), so concept queries miss results BM25+dense RRF catches.
+						<strong>semble</strong> uses the same Model2Vec + BM25 + RRF stack but is search-only — no structural graph.
+						<strong>Sourcegraph Cody</strong> has graph analysis but requires cloud infrastructure.
+					</p>
+				</section>
+
+			</main>
+
+			<!-- FOOTER -->
+			<footer class="foot">
+				<span class="foot-mark">codesynapse</span>
+				<nav class="foot-links">
+					<a href={repo}>GitHub</a>
+					<a href={crates}>Crates.io</a>
+					<a href={`${repo}/blob/master/LICENSE`}>MIT</a>
+					<a href={`${repo}/blob/master/CONTRIBUTING.md`}>Contributing</a>
+				</nav>
+			</footer>
+
+		</div>
+
+		<script>
+			// Copy install command
+			const installWrap = document.querySelector('.install');
+			const installBtn = installWrap?.querySelector('.copy');
+			if (installWrap && installBtn) {
+				const original = installBtn.innerHTML;
+				installBtn.addEventListener('click', async () => {
+					try {
+						await navigator.clipboard.writeText(installWrap.getAttribute('data-install') ?? '');
+						installBtn.innerHTML = '<span class="copied">Copied</span>';
+						setTimeout(() => { installBtn.innerHTML = original; }, 1400);
+					} catch { /* clipboard blocked */ }
+				});
+			}
+
+			// Copy code blocks in quick start
+			document.querySelectorAll('.code-block').forEach((block) => {
+				const btn = block.querySelector('.code-copy');
+				if (!btn) return;
+				const original = btn.innerHTML;
+				btn.addEventListener('click', async () => {
+					try {
+						await navigator.clipboard.writeText(block.getAttribute('data-copy') ?? '');
+						btn.innerHTML = '<span class="copied">✓</span>';
+						setTimeout(() => { btn.innerHTML = original; }, 1400);
+					} catch { /* clipboard blocked */ }
+				});
+			});
+		</script>
+
+		<style>
+			/* ---- tokens ---- */
+			:root {
+				--bg:       #050D18;
+				--bg-2:     #0A1628;
+				--bg-3:     #0F1E35;
+				--border:   #1A2840;
+				--cyan:     #22D3EE;
+				--blue:     #0EA5E9;
+				--cyan-dim: #A5F3FC;
+				--text:     #E2E8F0;
+				--text-2:   #94A3B8;
+				--text-3:   #475569;
+				--font:     'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+				--font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+			}
+
+			:global(*), :global(*::before), :global(*::after) {
+				box-sizing: border-box;
+			}
+
+			:global(html) {
+				background: var(--bg);
+			}
+
+			:global(body) {
+				margin: 0;
+				font-family: var(--font);
+				color: var(--text);
+				background: var(--bg);
+				overflow-x: hidden;
+				-webkit-font-smoothing: antialiased;
+				-moz-osx-font-smoothing: grayscale;
+			}
+
+			/* ---- frame ---- */
+			.frame {
+				max-width: 1320px;
+				margin: 0 auto;
+				border-inline: 1px solid var(--border);
+				min-height: 100vh;
+			}
+
+			/* ---- nav ---- */
+			.nav {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				padding: 1.1rem 2.5rem;
+				border-bottom: 1px solid var(--border);
+				position: sticky;
+				top: 0;
+				background: var(--bg);
+				z-index: 10;
+			}
+
+			.wordmark {
+				display: flex;
+				align-items: center;
+				gap: 0.6rem;
+				font-weight: 700;
+				font-size: 1.1rem;
+				letter-spacing: -0.02em;
+				color: var(--text);
+				text-decoration: none;
+				font-family: var(--font-mono);
+			}
+
+			.nav-links {
+				display: flex;
+				align-items: center;
+				gap: 2rem;
+			}
+
+			.nav-links a {
+				color: var(--text-2);
+				text-decoration: none;
+				font-size: 0.9rem;
+				font-weight: 500;
+				transition: color 0.15s;
+			}
+
+			.nav-links a:not(.star):hover {
+				color: var(--text);
+			}
+
+			.star {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.35rem;
+				border: 1px solid var(--border);
+				padding: 0.35rem 0.75rem;
+				font-variant-numeric: tabular-nums;
+				color: var(--text-2) !important;
+				transition: border-color 0.15s, color 0.15s !important;
+			}
+
+			.star:hover {
+				border-color: var(--cyan) !important;
+				color: var(--cyan) !important;
+			}
+
+			.star-glyph { font-size: 0.8em; }
+
+			/* ---- hero ---- */
+			.hero {
+				padding: 5rem 3rem 4rem;
+				border-bottom: 1px solid var(--border);
+				max-width: 800px;
+				margin: 0 auto;
+				text-align: center;
+			}
+
+			/* ---- demo ---- */
+			.demo {
+				border-bottom: 1px solid var(--border);
+				background: var(--bg-2);
+				padding: 2.5rem 3rem;
+				display: flex;
+				justify-content: center;
+			}
+
+			.demo img {
+				width: 100%;
+				max-width: 1100px;
+				display: block;
+				border: 1px solid var(--border);
+			}
+
+			h1 {
+				font-size: clamp(2.2rem, 5vw, 3.8rem);
+				line-height: 1.05;
+				font-weight: 800;
+				letter-spacing: -0.04em;
+				margin: 0 0 1.4rem;
+				color: var(--text);
+			}
+
+			.lede {
+				font-size: 1.1rem;
+				line-height: 1.65;
+				color: var(--text-2);
+				max-width: 48ch;
+				margin: 0 auto 2rem;
+			}
+
+			.cta {
+				display: flex;
+				gap: 0.8rem;
+				margin-bottom: 1.6rem;
+				flex-wrap: wrap;
+				justify-content: center;
+			}
+
+			.btn {
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				padding: 0.7rem 1.4rem;
+				font-size: 0.95rem;
+				font-weight: 600;
+				text-decoration: none;
+				border: 1px solid transparent;
+				transition: background 0.15s, color 0.15s, border-color 0.15s;
+				font-family: var(--font);
+			}
+
+			.btn-primary {
+				background: var(--cyan);
+				color: var(--bg);
+				border-color: var(--cyan);
+			}
+
+			.btn-primary:hover {
+				background: var(--cyan-dim);
+				border-color: var(--cyan-dim);
+			}
+
+			.btn-ghost {
+				background: transparent;
+				color: var(--text-2);
+				border-color: var(--border);
+			}
+
+			.btn-ghost:hover {
+				color: var(--text);
+				border-color: var(--text-2);
+			}
+
+			.install {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.5rem;
+				border: 1px solid var(--border);
+				padding: 0.55rem 0.6rem 0.55rem 1rem;
+				font-family: var(--font-mono);
+				font-size: 0.88rem;
+				background: var(--bg-2);
+				margin: 0 auto;
+				max-width: 100%;
+				overflow-x: auto;
+			}
+
+			.install code {
+				font-family: inherit;
+				background: none;
+				color: var(--cyan);
+			}
+
+			.copy {
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				border: none;
+				background: transparent;
+				cursor: pointer;
+				padding: 0.3rem;
+				color: var(--text-3);
+				transition: color 0.15s;
+			}
+
+			.copy:hover { color: var(--text); }
+
+			:global(.copied) {
+				font-family: var(--font);
+				font-size: 0.75rem;
+				color: var(--cyan);
+			}
+
+			/* ---- stats bar ---- */
+			.stats {
+				display: grid;
+				grid-template-columns: repeat(4, 1fr);
+				border-bottom: 1px solid var(--border);
+			}
+
+			.stat {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				padding: 2.2rem 1rem;
+				gap: 0.3rem;
+			}
+
+			.stat + .stat {
+				border-inline-start: 1px solid var(--border);
+			}
+
+			.stat-num {
+				font-size: 2.4rem;
+				font-weight: 800;
+				letter-spacing: -0.04em;
+				color: var(--cyan);
+				font-family: var(--font-mono);
+				line-height: 1;
+			}
+
+			.stat-label {
+				font-size: 0.85rem;
+				color: var(--text-2);
+				text-transform: uppercase;
+				letter-spacing: 0.06em;
+				font-weight: 500;
+			}
+
+			/* ---- features ---- */
+			.features {
+				display: grid;
+				grid-template-columns: repeat(3, 1fr);
+				border-bottom: 1px solid var(--border);
+			}
+
+			.feature {
+				display: grid;
+				grid-template-columns: auto 1px 1fr;
+				column-gap: 1.4rem;
+				align-items: start;
+				padding: 2.8rem 2.2rem;
+			}
+
+			.feature + .feature {
+				border-inline-start: 1px solid var(--border);
+			}
+
+			.feature::before {
+				content: '';
+				grid-column: 2;
+				grid-row: 1 / 4;
+				width: 1px;
+				align-self: stretch;
+				background: var(--border);
+			}
+
+			.ficon {
+				grid-column: 1;
+				grid-row: 1 / 4;
+				align-self: start;
+				margin-top: 0.2rem;
+				width: 56px;
+				height: 56px;
+				color: var(--cyan);
+				flex-shrink: 0;
+			}
+
+			.feature h2 {
+				grid-column: 3;
+				grid-row: 1;
+				font-size: 1.15rem;
+				font-weight: 700;
+				margin: 0 0 0.6rem;
+				letter-spacing: -0.02em;
+				color: var(--text);
+			}
+
+			.feature p {
+				grid-column: 3;
+				grid-row: 2;
+				font-size: 0.95rem;
+				line-height: 1.6;
+				color: var(--text-2);
+				margin: 0;
+			}
+
+			.feature p code {
+				font-family: var(--font-mono);
+				font-size: 0.85em;
+				color: var(--cyan-dim);
+				background: var(--bg-3);
+				padding: 0.1em 0.35em;
+			}
+
+			/* ---- works with ---- */
+			.works-with {
+				display: flex;
+				align-items: center;
+				gap: 1.5rem;
+				padding: 1.6rem 2.5rem;
+				border-bottom: 1px solid var(--border);
+				flex-wrap: wrap;
+			}
+
+			.works-label {
+				font-size: 0.8rem;
+				font-weight: 600;
+				text-transform: uppercase;
+				letter-spacing: 0.1em;
+				color: var(--text-3);
+				margin: 0;
+				white-space: nowrap;
+			}
+
+			.clients {
+				list-style: none;
+				margin: 0;
+				padding: 0;
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.5rem;
+			}
+
+			.clients li {
+				font-size: 0.82rem;
+				font-weight: 500;
+				padding: 0.3rem 0.8rem;
+				border: 1px solid var(--border);
+				color: var(--text-2);
+				font-family: var(--font-mono);
+			}
+
+			/* ---- quick start ---- */
+			.quickstart {
+				padding: 4rem 2.5rem;
+				border-bottom: 1px solid var(--border);
+			}
+
+			.section-title {
+				font-size: 1.8rem;
+				font-weight: 800;
+				letter-spacing: -0.035em;
+				margin: 0 0 2.5rem;
+				color: var(--text);
+			}
+
+			.steps {
+				list-style: none;
+				margin: 0;
+				padding: 0;
+				display: flex;
+				flex-direction: column;
+				gap: 0;
+			}
+
+			.step {
+				display: grid;
+				grid-template-columns: 56px 1fr;
+				gap: 0 1.5rem;
+				padding: 2rem 0;
+				border-top: 1px solid var(--border);
+				align-items: start;
+			}
+
+			.step:last-child {
+				border-bottom: 1px solid var(--border);
+			}
+
+			.step-num {
+				width: 40px;
+				height: 40px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				border: 1px solid var(--cyan);
+				color: var(--cyan);
+				font-size: 1rem;
+				font-weight: 700;
+				font-family: var(--font-mono);
+				flex-shrink: 0;
+				margin-top: 0.15rem;
+			}
+
+			.step-body {
+				min-width: 0;
+			}
+
+			.step-body h3 {
+				font-size: 1.1rem;
+				font-weight: 700;
+				margin: 0 0 0.5rem;
+				color: var(--text);
+				letter-spacing: -0.02em;
+			}
+
+			.step-body p {
+				font-size: 0.93rem;
+				line-height: 1.6;
+				color: var(--text-2);
+				margin: 0 0 0.8rem;
+			}
+
+			.step-body p a {
+				color: var(--cyan);
+				text-decoration: none;
+			}
+
+			.step-body p a:hover {
+				text-decoration: underline;
+				text-underline-offset: 3px;
+			}
+
+			.code-block {
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+				background: var(--bg-2);
+				border: 1px solid var(--border);
+				padding: 0.6rem 0.7rem 0.6rem 1rem;
+				margin-bottom: 0.6rem;
+				max-width: 100%;
+			}
+
+			.code-block pre {
+				margin: 0;
+				flex: 1;
+				min-width: 0;
+				overflow-x: auto;
+			}
+
+			.code-block code {
+				font-family: var(--font-mono);
+				font-size: 0.88rem;
+				color: var(--cyan);
+				white-space: pre;
+			}
+
+			.code-copy {
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				border: none;
+				background: transparent;
+				cursor: pointer;
+				padding: 0.25rem;
+				color: var(--text-3);
+				flex-shrink: 0;
+				transition: color 0.15s;
+			}
+
+			.code-copy:hover { color: var(--text); }
+
+			.step-note {
+				font-size: 0.82rem !important;
+				color: var(--text-3) !important;
+				margin-top: 0.4rem !important;
+			}
+
+			.step-note code {
+				font-family: var(--font-mono);
+				font-size: 0.85em;
+				color: var(--cyan-dim);
+				background: var(--bg-3);
+				padding: 0.1em 0.35em;
+			}
+
+			.example-queries {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.6rem;
+				margin-top: 0.8rem;
+			}
+
+			.query {
+				font-size: 0.85rem;
+				padding: 0.4rem 0.85rem;
+				border: 1px solid var(--border);
+				color: var(--text-2);
+				font-style: italic;
+				background: var(--bg-2);
+			}
+
+			/* ---- comparison ---- */
+			.comparison {
+				padding: 4rem 2.5rem;
+				border-bottom: 1px solid var(--border);
+			}
+
+			.table-wrap {
+				overflow-x: auto;
+				margin-bottom: 1.5rem;
+			}
+
+			table {
+				width: 100%;
+				border-collapse: collapse;
+				font-size: 0.9rem;
+			}
+
+			th, td {
+				padding: 0.75rem 1.2rem;
+				text-align: center;
+				border-bottom: 1px solid var(--border);
+			}
+
+			th {
+				font-weight: 600;
+				font-size: 0.8rem;
+				text-transform: uppercase;
+				letter-spacing: 0.06em;
+				color: var(--text-2);
+				background: var(--bg-2);
+			}
+
+			td.row-label {
+				text-align: left;
+				color: var(--text-2);
+				font-size: 0.88rem;
+			}
+
+			td.col-cs {
+				background: color-mix(in srgb, var(--cyan) 6%, var(--bg));
+				border-inline: 1px solid color-mix(in srgb, var(--cyan) 20%, transparent);
+			}
+
+			th.col-cs {
+				background: color-mix(in srgb, var(--cyan) 12%, var(--bg-2));
+				border-inline: 1px solid color-mix(in srgb, var(--cyan) 20%, transparent);
+				color: var(--cyan);
+			}
+
+			.val-yes { color: var(--cyan); }
+			.val-no  { color: var(--text-3); }
+			.val-win { color: var(--cyan); font-weight: 700; }
+
+			.comparison-note {
+				font-size: 0.85rem;
+				color: var(--text-3);
+				line-height: 1.65;
+				max-width: 72ch;
+				margin: 0;
+			}
+
+			.comparison-note strong {
+				color: var(--text-2);
+			}
+
+			/* ---- footer ---- */
+			.foot {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				padding: 1.4rem 2.5rem;
+				border-top: 1px solid var(--border);
+			}
+
+			.foot-mark {
+				font-weight: 700;
+				font-size: 0.95rem;
+				letter-spacing: -0.02em;
+				color: var(--text-2);
+				font-family: var(--font-mono);
+			}
+
+			.foot-links {
+				display: flex;
+				gap: 1.6rem;
+			}
+
+			.foot-links a {
+				color: var(--text-3);
+				text-decoration: none;
+				font-size: 0.88rem;
+				transition: color 0.15s;
+			}
+
+			.foot-links a:hover {
+				color: var(--text);
+			}
+
+			/* ---- entrance animation ---- */
+			@media (prefers-reduced-motion: no-preference) {
+				.hero > * {
+					opacity: 0;
+					transform: translateY(10px);
+					animation: fade-up 0.5s ease forwards;
+				}
+				.hero > *:nth-child(1) { animation-delay: 0.05s; }
+				.hero > *:nth-child(2) { animation-delay: 0.12s; }
+				.hero > *:nth-child(3) { animation-delay: 0.18s; }
+				.hero > *:nth-child(4) { animation-delay: 0.24s; }
+				@keyframes fade-up {
+					to { opacity: 1; transform: none; }
+				}
+			}
+
+			/* ---- responsive ---- */
+			@media (max-width: 900px) {
+				.hero {
+					padding: 3rem 1.5rem 2.5rem;
+				}
+				.demo {
+					padding: 1.5rem;
+				}
+				.features {
+					grid-template-columns: 1fr;
+				}
+				.feature + .feature {
+					border-inline-start: none;
+					border-top: 1px solid var(--border);
+				}
+				.stats {
+					grid-template-columns: repeat(2, 1fr);
+				}
+				.stats .stat:nth-child(3) {
+					border-top: 1px solid var(--border);
+				}
+				.stats .stat:nth-child(3),
+				.stats .stat:nth-child(4) {
+					border-inline-start: none;
+				}
+				.stats .stat:nth-child(4) {
+					border-inline-start: 1px solid var(--border);
+					border-top: 1px solid var(--border);
+				}
+				.nav {
+					padding: 1rem 1.25rem;
+				}
+				.nav-links {
+					gap: 1rem;
+				}
+				.quickstart,
+				.comparison {
+					padding: 3rem 1.5rem;
+				}
+				.works-with {
+					padding: 1.4rem 1.5rem;
+				}
+				.foot {
+					flex-direction: column;
+					gap: 1rem;
+					align-items: flex-start;
+					padding: 1.4rem 1.5rem;
+				}
+			}
+
+			@media (max-width: 520px) {
+				.star { display: none; }
+				h1 { font-size: 2rem; }
+				.stat-num { font-size: 1.8rem; }
+				.step { grid-template-columns: 44px 1fr; }
+			}
+		</style>
+	</body>
+</html>
